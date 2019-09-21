@@ -1,0 +1,12 @@
+[{
+    "id": "orga1",
+    "name": "Orga 1",
+    "members": [{
+      "id": "admin1",
+      "role": "admin"
+    }, {
+      "id": "user1",
+      "role": "user"
+    }]
+  }
+]

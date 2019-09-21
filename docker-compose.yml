@@ -1,0 +1,23 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:4.2
+    ports:
+      - 27017:27017
+  sd:
+    image: koumoul/simple-directory:1
+    ports:
+      - 8080:8080
+      - 1080:1080
+    environment:
+      - ADMINS=["alban.mouton@koumoul.com", "superadmin@test.com"]
+      - PUBLIC_URL=http://localhost:8080
+      - MAILDEV_ACTIVE=true
+      - STORAGE_TYPE=file
+    volumes:
+      - ./test/resources/users.json:/webapp/data/users.json
+      - ./test/resources/organizations.json:/webapp/data/organizations.json
+  hello:
+    image: nginxdemos/hello
+    ports:
+      - 5881:80
