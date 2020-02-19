@@ -18,11 +18,14 @@ app.use(session.loginCallback)
 app.use(session.auth)
 
 app.use((req, res, next) => {
-  if (!req.user) {
-    const redirect = `${config.publicUrl}${req.originalUrl}${req.originalUrl.includes('?') ? '&' : '?'}id_token=`
-    return res.redirect(`${config.directoryUrl}/login?redirect=${encodeURIComponent(redirect)}`)
+  const redirect = `${config.publicUrl}${req.originalUrl}${req.originalUrl.includes('?') ? '&' : '?'}id_token=`
+  let loginUrl = `${config.directoryUrl}/login?redirect=${encodeURIComponent(redirect)}`
+  if (config.adminOnly) loginUrl += '&adminMode=true'
+  if (!req.user) return res.redirect(loginUrl)
+  if (config.adminOnly) {
+    if (!req.user.isAdmin) return res.status(403).send('Super admin only')
+    if (!req.user.adminMode) return res.redirect(loginUrl)
   }
-  if (config.adminOnly && !req.user.isAdmin) return res.status(403).send('Super admin only')
   next()
 })
 
