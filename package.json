@@ -1,6 +1,6 @@
 {
   "name": "@koumoul/sd-proxy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Apply simple-directory authentication through a minimalist reverse proxy.",
   "main": "index.js",
   "scripts": {
