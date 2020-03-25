@@ -18,7 +18,12 @@ app.use(session.loginCallback)
 app.use(session.auth)
 
 app.use((req, res, next) => {
-  const redirect = `${config.publicUrl}${req.originalUrl}${req.originalUrl.includes('?') ? '&' : '?'}id_token=`
+  const url = config.publicUrl + req.originalUrl
+
+  // manifest request is sent without cookies by some browsers
+  if (new URL(url).pathname.endsWith('/manifest.json')) return next()
+
+  const redirect = `${url}${req.originalUrl.includes('?') ? '&' : '?'}id_token=`
   let loginUrl = `${config.directoryUrl}/login?redirect=${encodeURIComponent(redirect)}`
   if (config.adminOnly) loginUrl += '&adminMode=true'
   if (!req.user) return res.redirect(loginUrl)
